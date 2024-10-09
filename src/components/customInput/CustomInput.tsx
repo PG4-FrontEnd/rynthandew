@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { CloseSVG } from '../../utils/CloseSvg.tsx';
 
@@ -86,7 +86,7 @@ const InputWrapper = styled.div`
 export const CustomInput = ({
   placeholder,
   width,
-  type,
+  type = 'text',
   error = '',
   label = '',
   background = 'white',
@@ -94,15 +94,13 @@ export const CustomInput = ({
   height = 42,
   iconLeft,
   closePaddingTop = 10,
+  required = false,
+  value = '',
+  onChange,
 }: InputProps) => {
-  const [value, setValue] = useState<string>('');
-  const reset = () => {
-    setValue('');
+  const handleReset = () => {
+    onChange?.({ target: { value: '' } } as any);
   };
-  const handleOnChange = e => {
-    setValue(e.target.value);
-  };
-
   return (
     <InputContainer>
       {label && <Label>{label}</Label>}
@@ -117,11 +115,12 @@ export const CustomInput = ({
           $background={background}
           $iconLeft={getIconUrl(iconLeft || '')}
           value={value}
-          onChange={handleOnChange}
+          onChange={onChange}
+          required={required}
         />
         {value && (
           <CloseBtn
-            onClick={reset}
+            onClick={handleReset}
             type="button"
             $closePaddingTop={closePaddingTop}
           >
