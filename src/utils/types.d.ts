@@ -6,8 +6,11 @@ declare interface InputProps {
   label?: string;
   height?: number;
   background?: string;
-  required?: string;
+  required?: boolean;
   fontSize?: number;
   iconLeft?: string;
   closePaddingTop?: number;
+  closePaddingRight?: number;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
