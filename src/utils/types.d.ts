@@ -9,4 +9,5 @@ declare interface InputProps {
   required?: string;
   fontSize?: number;
   iconLeft?: string;
+  closePaddingTop?: number;
 }
