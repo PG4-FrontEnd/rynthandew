@@ -102,7 +102,8 @@ export const CustomInput = ({
   value = '',
   onChange,
 }: InputProps) => {
-  const handleReset = () => {
+  const handleReset = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     onChange?.({ target: { value: '' } } as any);
   };
   return (
