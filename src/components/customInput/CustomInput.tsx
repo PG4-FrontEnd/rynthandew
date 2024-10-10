@@ -2,6 +2,23 @@ import React from 'react';
 import styled from 'styled-components';
 import { CloseSVG } from '../../utils/CloseSvg.tsx';
 
+interface InputProps {
+  width: number;
+  type: string;
+  placeholder: string;
+  error?: string;
+  label?: string;
+  height?: number;
+  background?: string;
+  required?: boolean;
+  fontSize?: number;
+  iconLeft?: string;
+  closePaddingTop?: number;
+  closePaddingRight?: number;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -95,12 +112,12 @@ export const CustomInput = ({
   background = 'white',
   fontSize = 16,
   height = 42,
-  iconLeft,
+  iconLeft = '',
   closePaddingTop = 10,
   closePaddingRight = 10,
   required = false,
   value = '',
-  onChange,
+  onChange = () => {},
 }: InputProps) => {
   const handleReset = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
