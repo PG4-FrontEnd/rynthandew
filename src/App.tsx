@@ -13,7 +13,7 @@ import Writing from './views/Writing.tsx';
 
 const GlobalStyle = createGlobalStyle`
   :root{
-    --selected : #EBF4Fb ;
+    --selected : #EDF4Fb ;
     --main : #0086CB;
   }
   body{
