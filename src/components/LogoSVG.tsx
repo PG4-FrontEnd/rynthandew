@@ -12,16 +12,19 @@ const LogoContainer = styled.div`
   height: 24px;
 `;
 
+const StyledSVG = styled.svg`
+  transform: translate(0px, 2px); // 아래로 약간 이동
+`;
+
 function LogoSVG() {
   return (
     <LogoContainer>
-      <svg
+      <StyledSVG
         width="30"
         height="24"
         viewBox="0 0 30 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ transform: 'translate(0px, 2px)' }} // 아래로 약간 이동
       >
         <g clipPath="url(#clip0_1_91)">
           <path
@@ -68,7 +71,7 @@ function LogoSVG() {
             <rect width="30" height="24" fill="white" />
           </clipPath>
         </defs>
-      </svg>
+      </StyledSVG>
     </LogoContainer>
   );
 }

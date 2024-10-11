@@ -1,9 +1,12 @@
 {
-  "compilerOptions": {
-    "jsx": "preserve",
-    "noEmit": true,
-    "allowImportingTsExtensions": true,
-    "module": "commonjs",
-    "esModuleInterop": true
-  }
-}
+    "compilerOptions": {
+      "jsx": "preserve",
+      "noEmit": true, // JavaScript 파일을 생성하지 않음
+      "emitDeclarationOnly": false, // 필요에 따라 true로 설정 가능
+      "allowImportingTsExtensions": true, // 이 옵션을 사용하려면 위 두 옵션 중 하나가 필요
+      "module": "commonjs",
+      "esModuleInterop": true,
+      "strict": true, // 타입 오류를 줄이기 위해 strict 모드 활성화
+      "forceConsistentCasingInFileNames": true // 파일 이름 대소문자 일관성을 유지
+    }
+  }  
