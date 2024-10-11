@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { CloseSVG } from '../../utils/CloseSvg.tsx';
+import { CloseSVG } from '../utils/CloseSvg.tsx';
 
 interface InputProps {
   width: number;
@@ -103,7 +103,7 @@ const InputWrapper = styled.div`
   width: fit-content;
 `;
 
-export const CustomInput = ({
+export default function CustomInput({
   placeholder,
   width,
   type = 'text',
@@ -118,7 +118,7 @@ export const CustomInput = ({
   required = false,
   value = '',
   onChange = () => {},
-}: InputProps) => {
+}: InputProps) {
   const handleReset = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     onChange?.({ target: { value: '' } } as any);
@@ -154,4 +154,4 @@ export const CustomInput = ({
       {error && <Error>{error}</Error>}
     </InputContainer>
   );
-};
+}
