@@ -1,11 +1,5 @@
-import React from 'react';
-import BoardCard from '../components/BoardCard.tsx';
+import React, { useState } from 'react';
 
 export default function Board() {
-  return (
-    <div>
-      Board
-      <BoardCard title="수영가기" manager="정동구" />
-    </div>
-  );
+  return <div>Board</div>;
 }
