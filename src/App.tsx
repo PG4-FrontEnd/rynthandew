@@ -10,6 +10,7 @@ import Login from './views/Login.tsx';
 import Notification from './views/Notification.tsx';
 import Setting from './views/Setting.tsx';
 import Writing from './views/Writing.tsx';
+import { svgSpriteSheet } from './utils/SvgSprite.tsx';
 
 const GlobalStyle = createGlobalStyle`
   :root{
@@ -26,6 +27,7 @@ function App() {
     <div className="App">
       <Reset />
       <GlobalStyle />
+      {svgSpriteSheet}
       <BrowserRouter>
         <Routes>
           <Route path="/join" element={<Join />} />
