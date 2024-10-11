@@ -5,7 +5,6 @@ function App() {
   return (
     <div className="App">
       <Reset />
-      <div>Hi, I am app</div>
     </div>
   );
 }
