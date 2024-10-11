@@ -1,11 +1,11 @@
 import React from 'react';
-import PageHeader from '../components/PageHeader.tsx';
+import BoardCard from '../components/BoardCard.tsx';
 
 export default function Board() {
   return (
     <div>
-      <PageHeader title="제목" />
       Board
+      <BoardCard title="수영가기" manager="정동구" />
     </div>
   );
 }
