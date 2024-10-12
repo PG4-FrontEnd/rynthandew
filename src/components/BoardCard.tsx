@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import AccountCircleFilledSvg from '../utils/AccountCircleFilledSvg.tsx';
-import { CloseSVG } from '../utils/CloseSvg.tsx';
+import { ICON, Icon } from '../utils/SvgSprite.tsx';
 
 interface BoardCardProp {
   title: string;
@@ -35,6 +34,7 @@ const BoardCardContainer = styled.div<{ width: number; height: number }>`
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.6);
   border-radius: 4px;
   background-color: white;
+  cursor: pointer;
 
   &:hover {
     background-color: #e9ecee;
@@ -120,11 +120,11 @@ export default function BoardCard({
             {title.length < 10 ? title : `${title.slice(0, 10)}...`}
           </BoardCardContainerTitle>
           <CloseSVGdiv onClick={closeClick} size={fontSize}>
-            <CloseSVG width={fontSize} height={fontSize} />
+            <Icon icon={ICON.CANCLE} size={fontSize.toString()} />
           </CloseSVGdiv>
         </BoardCardContainerTitleDiv>
         <AccountCircleFilledSvgDiv>
-          <AccountCircleFilledSvg />
+          <Icon icon={ICON.ACCOUNT_CIRCLE} />
           <ManagerIndicator>담당자 : {manager}</ManagerIndicator>
         </AccountCircleFilledSvgDiv>
       </BoardCardContainerFlexCol>

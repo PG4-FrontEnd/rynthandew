@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { CloseSVG } from '../utils/CloseSvg.tsx';
+import { ICON, Icon } from '../utils/SvgSprite.tsx';
 
 interface InputProps {
   width: number;
@@ -15,8 +15,6 @@ interface InputProps {
   iconLeft?: string;
   closePaddingTop?: number;
   closePaddingRight?: number;
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const InputContainer = styled.div`
@@ -34,6 +32,26 @@ const getIconUrl = (iconLeft: string) => {
       return '';
   }
 };
+
+const CloseBtn = styled.button<{
+  $closePaddingTop: number;
+  $closePaddingRight: number;
+  $isVisible: boolean;
+}>`
+  opacity: ${props => (props.$isVisible ? 1 : 0)};
+  visibility: ${props => (props.$isVisible ? 'visible' : 'hidden')};
+  position: absolute;
+  top: ${props => `${props.$closePaddingTop}px`};
+  right: ${props => `${props.$closePaddingRight}px`};
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  background-color: inherit;
+  border: none;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+`;
 
 const Input = styled.input<{
   fontSize: number;
@@ -86,18 +104,6 @@ const Error = styled.span`
   margin-top: 8px;
 `;
 
-const CloseBtn = styled.button<{
-  $closePaddingTop: number;
-  $closePaddingRight: number;
-}>`
-  position: absolute;
-  top: ${props => `${props.$closePaddingTop}px`};
-  right: ${props => `${props.$closePaddingRight}px`};
-  cursor: pointer;
-  background: transparent;
-  border: none;
-`;
-
 const InputWrapper = styled.div`
   position: relative;
   width: fit-content;
@@ -116,12 +122,22 @@ export default function CustomInput({
   closePaddingTop = 10,
   closePaddingRight = 10,
   required = false,
-  value = '',
-  onChange = () => {},
 }: InputProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [isFocused, setIsFocused] = useState(false);
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+  const handleBlur = () => {
+    setIsFocused(false);
+  };
+
   const handleReset = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    onChange?.({ target: { value: '' } } as any);
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
   };
   return (
     <InputContainer>
@@ -136,20 +152,21 @@ export default function CustomInput({
           $error={error}
           $background={background}
           $iconLeft={getIconUrl(iconLeft || '')}
-          value={value}
-          onChange={onChange}
+          ref={inputRef}
           required={required}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
-        {value && (
-          <CloseBtn
-            onClick={handleReset}
-            type="button"
-            $closePaddingTop={closePaddingTop}
-            $closePaddingRight={closePaddingRight}
-          >
-            <CloseSVG />
-          </CloseBtn>
-        )}
+
+        <CloseBtn
+          onClick={handleReset}
+          type="button"
+          $closePaddingTop={closePaddingTop}
+          $closePaddingRight={closePaddingRight}
+          $isVisible={isFocused}
+        >
+          <Icon icon={ICON.CANCLE} size={fontSize.toString()} />
+        </CloseBtn>
       </InputWrapper>
       {error && <Error>{error}</Error>}
     </InputContainer>
