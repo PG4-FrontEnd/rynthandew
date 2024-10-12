@@ -5,8 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 const BreadcrumbsContainer = styled.div`
   display: flex;
   align-items: center;
-  font-size: 14px;
-  margin-bottom: 8px;
+  font-size: 16px;
 `;
 
 // 게시판에 글 조회 시 수정 필요
@@ -16,7 +15,7 @@ const validPathname = (pathname: string) => {
   if (pathname === 'setting') return '설정';
   if (pathname === 'writing') return '글쓰기';
   if (pathname === 'bulletin') return '게시판';
-  if (pathname === 'writing') return '게시판';
+  if (pathname === 'notification') return '수신함';
   return '특수처리';
 };
 

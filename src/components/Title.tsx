@@ -1,33 +1,30 @@
 import React from 'react';
 import styled from 'styled-components';
-import Breadcrumbs from './Breadcrumbs.tsx';
 
-interface PageHeaderTitleProps {
+interface TitleProps {
   title: string;
   fontSize?: number;
   fontWeight?: number;
 }
 
-const PageHeaderTitleContainer = styled.div<{
+const TitleContainer = styled.div<{
   fontSize: number;
   fontWeight: number;
 }>`
+  margin-top: 8px;
   width: fit-content;
   font-size: ${props => `${props.fontSize}px`};
   font-weight: ${props => props.fontWeight};
 `;
 
-export default function PageHeader({
+export default function Title({
   title,
   fontSize = 24,
   fontWeight = 500,
-}: PageHeaderTitleProps) {
+}: TitleProps) {
   return (
-    <div>
-      <Breadcrumbs />
-      <PageHeaderTitleContainer fontSize={fontSize} fontWeight={fontWeight}>
-        {title}
-      </PageHeaderTitleContainer>
-    </div>
+    <TitleContainer fontSize={fontSize} fontWeight={fontWeight}>
+      {title}
+    </TitleContainer>
   );
 }
