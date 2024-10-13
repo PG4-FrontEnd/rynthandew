@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import React from 'react';
-import LogoSVG from './LogoSVG'; // 로고 SVG 임포트
-import MailIcon from './MailIcon'; // 메일 아이콘 임포트
-import UserIcon from './UserIcon'; // 사용자 아이콘 임포트
+import LogoSVG from './LogoSVG.tsx'; // 로고 SVG 임포트
+import MailIcon from './MailIcon.tsx'; // 메일 아이콘 임포트
+import UserIcon from './UserIcon.tsx'; // 사용자 아이콘 임포트
 
 const HeaderContainer = styled.div`
   display: flex;
