@@ -6,9 +6,10 @@ import Title from '../Title.tsx';
 interface PageHeaderProps {
   title: string;
   Breadcurmbs?: boolean;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
-const PageHeaderContainer = styled.div`
+const PageHeaderForm = styled.form`
   display: grid;
   grid-template-row: 1fr;
   grid-gap: 8px;
@@ -23,11 +24,12 @@ const EmptyDiv = styled.div`
 export default function PageHeader({
   title,
   Breadcurmbs = true,
+  onSubmit,
 }: PageHeaderProps) {
   return (
-    <PageHeaderContainer>
+    <PageHeaderForm onSubmit={onSubmit}>
       {Breadcurmbs ? <Breadcrumbs /> : <EmptyDiv />}
       <Title title={title} />
-    </PageHeaderContainer>
+    </PageHeaderForm>
   );
 }
