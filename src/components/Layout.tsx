@@ -14,7 +14,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-top: 101px;
+  padding-top: 111px;
 `;
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
