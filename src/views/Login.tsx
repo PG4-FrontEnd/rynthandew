@@ -49,7 +49,7 @@ const LoginButton = styled.button`
   font-size: 16px;
   text-align: center;
   color: white;
-  background-color: var(--main);
+  background-color: #1e222c;
   border-radius: 8px;
   border: none;
   outline: none;
