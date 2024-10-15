@@ -56,6 +56,14 @@ const LoginButton = styled.button`
   padding-top: 15px;
   padding-bottom: 15px;
   margin-top: 10px;
+  cursor: pointer;
+`;
+
+const Divider = styled.div`
+  height: 1px;
+  width: 100%;
+  background-color: #cac4d0;
+  position: relative;
 `;
 
 export default function Login() {
@@ -63,10 +71,11 @@ export default function Login() {
   const handleSubmit = (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
     // api 연결
-
     // 에러 표시 로직
     setErrors('어쩌고 저쩌고');
   };
+
+  const handleGitHubLogin = () => {};
   return (
     <Background>
       <Container>
@@ -94,6 +103,8 @@ export default function Login() {
               error={errors}
             />
             <LoginButton>로그인</LoginButton>
+            <Divider />
+            <LoginButton onClick={handleGitHubLogin}>깃허브 로그인</LoginButton>
           </Form>
         </InnerContainer>
       </Container>
