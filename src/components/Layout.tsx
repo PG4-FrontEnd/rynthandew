@@ -14,16 +14,15 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding-top: 101px;
 `;
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <MainContainer>
       <Sidebar />
-      <Content>
-        <Header />
-        {children}
-      </Content>
+      <Header />
+      <Content>{children}</Content>
     </MainContainer>
   );
 };
