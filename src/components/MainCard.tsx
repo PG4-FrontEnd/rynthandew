@@ -9,8 +9,8 @@ interface CardProps {
 }
 
 const CardContainer = styled.div`
-  width: 250px;
-  height: 300px;
+  width: 220px;
+  height: 250px;
   border: 1px solid #ccc;
   border-radius: 10px;
   overflow: hidden;
@@ -41,9 +41,9 @@ const CardContent = styled.div`
 `;
 
 const CardTitle = styled.h3`
-  font-size: 1.5rem;
+  font-size: 1rem;
   margin: 0 0 10px;
-  color: #333;
+  color: #1976d2;
 `;
 
 const CardDescription = styled.p`

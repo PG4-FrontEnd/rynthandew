@@ -1,30 +1,34 @@
-// src/components/Layout.tsx
 import React from 'react';
 import styled from 'styled-components';
 import Header from './navigationBar/Header.tsx';
-import Sidebar from './navigationBar/SideBar.tsx';
+import SideBar from './navigationBar/SideBar.tsx';
 
-const MainContainer = styled.div`
+const LayoutContainer = styled.div`
   display: flex;
+  height: 100vh;
+  overflow: hidden;
 `;
 
-const Content = styled.div`
-  padding: 20px;
+const MainContentWrapper = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+`;
+
+const MainContent = styled.main`
+  flex: 1;
+  padding: 20px;
 `;
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <MainContainer>
-      <Sidebar />
-      <Content>
+    <LayoutContainer>
+      <SideBar />
+      <MainContentWrapper>
         <Header />
-        {children}
-      </Content>
-    </MainContainer>
+        <MainContent>{children}</MainContent>
+      </MainContentWrapper>
+    </LayoutContainer>
   );
 };
 

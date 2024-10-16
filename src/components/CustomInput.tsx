@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, ChangeEvent } from 'react';
 import styled from 'styled-components';
-import { ICON, Icon } from '../utils/SvgSprite.tsx';
+import { ICON } from '../utils/SvgSprite.tsx'; // .tsx 확장자 제거
 
 interface InputProps {
   width: number;
@@ -12,9 +12,11 @@ interface InputProps {
   background?: string;
   required?: boolean;
   fontSize?: number;
-  iconLeft?: string;
+  iconLeft?: ICON;
   closePaddingTop?: number;
   closePaddingRight?: number;
+  value?: string;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const InputContainer = styled.div`
@@ -23,34 +25,9 @@ const InputContainer = styled.div`
   box-sizing: border-box;
 `;
 
-// placeholder 왼쪽에 들어갈 icon의 url 반환하는 함수
-const getIconUrl = (iconLeft: string) => {
-  switch (iconLeft) {
-    case 'search':
-      return `url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15.7549 14.255H14.9649L14.6849 13.985C15.6649 12.845 16.2549 11.365 16.2549 9.755C16.2549 6.165 13.3449 3.255 9.75488 3.255C6.16488 3.255 3.25488 6.165 3.25488 9.755C3.25488 13.345 6.16488 16.255 9.75488 16.255C11.3649 16.255 12.8449 15.665 13.9849 14.685L14.2549 14.965V15.755L19.2549 20.745L20.7449 19.255L15.7549 14.255ZM9.75488 14.255C7.26488 14.255 5.25488 12.245 5.25488 9.755C5.25488 7.26501 7.26488 5.255 9.75488 5.255C12.2449 5.255 14.2549 7.26501 14.2549 9.755C14.2549 12.245 12.2449 14.255 9.75488 14.255Z' fill='black' fill-opacity='0.54'/%3E%3C/svg%3E%0A")`;
-    default:
-      return '';
-  }
-};
-
-const CloseBtn = styled.button<{
-  $closePaddingTop: number;
-  $closePaddingRight: number;
-  $isVisible: boolean;
-}>`
-  opacity: ${props => (props.$isVisible ? 1 : 0)};
-  visibility: ${props => (props.$isVisible ? 'visible' : 'hidden')};
-  position: absolute;
-  top: ${props => `${props.$closePaddingTop}px`};
-  right: ${props => `${props.$closePaddingRight}px`};
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-  background-color: inherit;
-  border: none;
-  transition:
-    opacity 0.3s ease,
-    visibility 0.3s ease;
+const InputWrapper = styled.div`
+  position: relative;
+  width: fit-content;
 `;
 
 const Input = styled.input<{
@@ -74,7 +51,7 @@ const Input = styled.input<{
 
   &::placeholder {
     color: #acb4bb;
-    background-image: ${props => (props.$iconLeft ? props.$iconLeft : '')};
+    background-image: ${props => props.$iconLeft};
     background-repeat: no-repeat;
     padding-left: ${props => (props.$iconLeft ? '30px' : '0px')};
     background-position-y: center;
@@ -104,12 +81,37 @@ const Error = styled.span`
   margin-top: 8px;
 `;
 
-const InputWrapper = styled.div`
-  position: relative;
-  width: fit-content;
+const CloseBtn = styled.button<{
+  $closePaddingTop: number;
+  $closePaddingRight: number;
+  $isVisible: boolean;
+}>`
+  opacity: ${props => (props.$isVisible ? 1 : 0)};
+  visibility: ${props => (props.$isVisible ? 'visible' : 'hidden')};
+  position: absolute;
+  top: ${props => `${props.$closePaddingTop}px`};
+  right: ${props => `${props.$closePaddingRight}px`};
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  background-color: inherit;
+  border: none;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
 `;
 
-export default function CustomInput({
+const getIconUrl = (iconLeft: ICON | undefined) => {
+  if (!iconLeft) return '';
+  switch (iconLeft) {
+    case ICON.SEARCH:
+      return `url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15.7549 14.255H14.9649L14.6849 13.985C15.6649 12.845 16.2549 11.365 16.2549 9.755C16.2549 6.165 13.3449 3.255 9.75488 3.255C6.16488 3.255 3.25488 6.165 3.25488 9.755C3.25488 13.345 6.16488 16.255 9.75488 16.255C11.3649 16.255 12.8449 15.665 13.9849 14.685L14.2549 14.965V15.755L19.2549 20.745L20.7449 19.255L15.7549 14.255ZM9.75488 14.255C7.26488 14.255 5.25488 12.245 5.25488 9.755C5.25488 7.26501 7.26488 5.255 9.75488 5.255C12.2449 5.255 14.2549 7.26501 14.2549 9.755C14.2549 12.245 12.2449 14.255 9.75488 14.255Z' fill='black' fill-opacity='0.54'/%3E%3C/svg%3E%0A")`;
+    default:
+      return '';
+  }
+};
+
+const CustomInput: React.FC<InputProps> = ({
   placeholder,
   width,
   type = 'text',
@@ -118,17 +120,20 @@ export default function CustomInput({
   background = 'white',
   fontSize = 16,
   height = 42,
-  iconLeft = '',
+  iconLeft,
   closePaddingTop = 10,
   closePaddingRight = 10,
   required = false,
-}: InputProps) {
+  value,
+  onChange,
+}) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
 
   const handleFocus = () => {
     setIsFocused(true);
   };
+
   const handleBlur = () => {
     setIsFocused(false);
   };
@@ -138,7 +143,11 @@ export default function CustomInput({
     if (inputRef.current) {
       inputRef.current.value = '';
     }
+    if (onChange) {
+      onChange({ target: { value: '' } } as ChangeEvent<HTMLInputElement>);
+    }
   };
+
   return (
     <InputContainer>
       {label && <Label>{label}</Label>}
@@ -151,24 +160,25 @@ export default function CustomInput({
           fontSize={fontSize}
           $error={error}
           $background={background}
-          $iconLeft={getIconUrl(iconLeft || '')}
+          $iconLeft={getIconUrl(iconLeft)}
           ref={inputRef}
           required={required}
           onFocus={handleFocus}
           onBlur={handleBlur}
+          value={value}
+          onChange={onChange}
         />
-
         <CloseBtn
           onClick={handleReset}
           type="button"
           $closePaddingTop={closePaddingTop}
           $closePaddingRight={closePaddingRight}
           $isVisible={isFocused}
-        >
-          <Icon icon={ICON.CANCLE} size={fontSize.toString()} />
-        </CloseBtn>
+        />
       </InputWrapper>
       {error && <Error>{error}</Error>}
     </InputContainer>
   );
-}
+};
+
+export default CustomInput;
