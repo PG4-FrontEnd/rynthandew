@@ -1,6 +1,32 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
+
+interface PathMap {
+  [key: string]: string;
+}
+
+interface UrlBuilderMap {
+  [key: string]: (baseUrl: string, id?: string) => string;
+}
+
+const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:3000';
+
+const PATH_MAP: PathMap = {
+  '': '홈',
+  board: '보드',
+  setting: '설정',
+  writing: '글쓰기',
+  bulletin: '게시판',
+  notification: '수신함',
+};
+
+const URL_BUILDER: UrlBuilderMap = {
+  board: (baseUrl, id) => `${baseUrl}/board/${id}`,
+  setting: (baseUrl, id) => `${baseUrl}/setting/${id}`,
+  '': baseUrl => baseUrl,
+  notification: baseUrl => `${baseUrl}/notification`,
+};
 
 const BreadcrumbsContainer = styled.div`
   display: flex;
@@ -8,27 +34,11 @@ const BreadcrumbsContainer = styled.div`
   font-size: 16px;
 `;
 
-// 게시판에 글 조회 시 수정 필요
-const validPathname = (pathname: string) => {
-  if (pathname === '') return '홈';
-  if (pathname === 'board') return '보드';
-  if (pathname === 'setting') return '설정';
-  if (pathname === 'writing') return '글쓰기';
-  if (pathname === 'bulletin') return '게시판';
-  if (pathname === 'notification') return '수신함';
-  return '특수처리';
-};
-
 const Separator = styled.span`
   margin: 0 5px;
 `;
 
-const Breadcrumb = styled.span<{ $isLast?: boolean }>`
-  font-size: 14px;
-  color: ${({ $isLast }) => ($isLast ? 'black' : 'rgba(0, 0, 0, 0.6)')};
-`;
-
-const BreadcrumbLink = styled(Link)<{ $isLast?: boolean }>`
+const BreadcrumbLink = styled(Link)<{ $isLast: boolean }>`
   cursor: pointer;
   font-size: 14px;
   color: ${({ $isLast }) => ($isLast ? 'black' : 'rgba(0, 0, 0, 0.6)')};
@@ -39,40 +49,55 @@ const BreadcrumbLink = styled(Link)<{ $isLast?: boolean }>`
   }
 `;
 
-export default function Breadcrumbs() {
-  const location = useLocation();
-  const { pathname } = location;
-  const segments = pathname.split('/');
-  let url = 'http://localhost:3000';
+const getPathName = (segment: string): string => PATH_MAP[segment] || segment;
 
-  return (
-    <BreadcrumbsContainer>
-      {pathname === '/' ? (
+const buildUrl = (segment: string, baseUrl: string, id?: string): string => {
+  const builder = URL_BUILDER[segment];
+  return builder ? builder(baseUrl, id) : '';
+};
+
+export default function Breadcrumbs() {
+  const { id } = useParams();
+  const { pathname } = useLocation();
+  const segments = pathname.split('/');
+  let keyId = 0;
+  if (pathname === '/') {
+    return (
+      <BreadcrumbsContainer>
         <BreadcrumbLink to="/" $isLast>
           홈
         </BreadcrumbLink>
-      ) : (
-        segments.map((segment: string, index: number) => {
-          const result = validPathname(segment);
-          if (index > 0) {
-            url += `/${segment}`;
-          }
-          const isLast = index === segments.length - 1;
+      </BreadcrumbsContainer>
+    );
+  }
 
-          return (
-            <React.Fragment key={url}>
-              {index !== 0 && <Separator> / </Separator>}
-              {result !== '특수처리' ? (
-                <BreadcrumbLink to={url} $isLast={isLast}>
-                  {result}
-                </BreadcrumbLink>
-              ) : (
-                <Breadcrumb $isLast={isLast}>{result}</Breadcrumb>
-              )}
-            </React.Fragment>
-          );
-        })
-      )}
+  let lastIndex: number;
+  if (segments[segments.length - 1] === id) {
+    lastIndex = segments.length - 2;
+  } else {
+    lastIndex = segments.length - 1;
+  }
+
+  return (
+    <BreadcrumbsContainer>
+      {segments.map((segment, index) => {
+        const isLast = index === lastIndex;
+        const pathName = getPathName(segment);
+        const url = buildUrl(segment, BASE_URL, id);
+        keyId += 1;
+        if (pathName === id) {
+          return <div />;
+        }
+
+        return (
+          <React.Fragment key={`${pathName}-${keyId}`}>
+            {index > 0 && <Separator>/</Separator>}
+            <BreadcrumbLink to={url} $isLast={isLast}>
+              {pathName}
+            </BreadcrumbLink>
+          </React.Fragment>
+        );
+      })}
     </BreadcrumbsContainer>
   );
 }

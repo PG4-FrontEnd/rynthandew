@@ -1,19 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
-
-interface InputProps {
-  width: number;
-  type: string;
-  placeholder: string;
-  error?: string;
-  label?: string;
-  height?: number;
-  background?: string;
-  required?: boolean;
-  fontSize?: number;
-  iconLeft?: string;
-  iconSize?: number;
-}
+import { useAppDispatch } from '../utils/hooks.ts';
+import { updateCard } from '../store/cardSlice.ts';
 
 const InputContainer = styled.div`
   display: flex;
@@ -21,7 +9,6 @@ const InputContainer = styled.div`
   box-sizing: border-box;
 `;
 
-// placeholder 왼쪽에 들어갈 icon의 url 반환하는 함수
 const getIconUrl = (iconLeft: string, iconSize: number) => {
   switch (iconLeft) {
     case 'search':
@@ -57,6 +44,7 @@ const Input = styled.input<{
     padding-left: ${props => (props.$iconLeft ? '24px' : '0px')};
     background-position-y: center;
   }
+
   &:focus {
     border: ${props =>
       props.$error ? '2px solid #F44336' : '1px solid #0086cb'};
@@ -99,14 +87,37 @@ export default function CustomInput({
   iconLeft = '',
   iconSize = 20,
   required = false,
+  initialValue = '',
+  id,
+  attr,
 }: InputProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const [value, setValue] = useState<string>(initialValue);
+
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (id && attr) {
+      const payload = { id, [attr]: value };
+      dispatch(updateCard(payload));
+    }
+  }, [id, attr, value]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+  };
 
   return (
     <InputContainer>
       {label && <Label>{label}</Label>}
       <InputWrapper>
         <Input
+          value={value}
           width={width}
           height={height}
           placeholder={placeholder}
@@ -117,6 +128,7 @@ export default function CustomInput({
           $iconLeft={getIconUrl(iconLeft || '', iconSize)}
           ref={inputRef}
           required={required}
+          onChange={handleChange}
         />
       </InputWrapper>
       {error && <Error>{error}</Error>}

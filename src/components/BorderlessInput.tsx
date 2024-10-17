@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-
-interface BorderlessInputProps {
-  initialText?: string;
-  fontSize?: number;
-  fontWeight?: number;
-}
+import { useAppDispatch } from '../utils/hooks.ts';
+import { updateCard } from '../store/cardSlice.ts';
 
 const Container = styled.div`
   width: 100%;
@@ -16,18 +12,18 @@ const Container = styled.div`
 const TextArea = styled.textarea<{
   fontSize: number;
   fontWeight: number;
-  paddingTop: number;
-  minHeight: number;
+  $paddingTop: number;
+  $minHeight: number;
 }>`
   border: 2px solid var(--main);
   padding-left: 4px;
-  padding-top: ${props => `${props.paddingTop}px`};
+  padding-top: ${props => `${props.$paddingTop}px`};
   background-color: white;
   width: 100%;
   line-height: 28px !important;
   font-size: ${props => `${props.fontSize}px`};
   font-weight: ${props => `${props.fontWeight}`};
-  min-height: ${props => `${props.minHeight}`};
+  min-height: ${props => `${props.$minHeight}`};
   resize: none;
   outline: none;
   overflow: hidden;
@@ -36,10 +32,10 @@ const TextArea = styled.textarea<{
 const NormalDiv = styled.div<{
   fontSize: number;
   fontWeight: number;
-  paddingTop: number;
+  $paddingTop: number;
 }>`
   white-space: pre-line;
-  padding-top: ${props => `${props.paddingTop}px`};
+  padding-top: ${props => `${props.$paddingTop}px`};
   padding-left: 4px;
   font-size: ${props => `${props.fontSize}px`};
   font-weight: ${props => `${props.fontWeight}`};
@@ -66,13 +62,20 @@ export default function BorderlessInput({
   initialText = '내용을 입력해주세요',
   fontSize = 16,
   fontWeight = 500,
+  id,
+  attr,
 }: BorderlessInputProps) {
   const [selected, setSelected] = useState(false);
   const [text, setText] = useState(initialText);
 
   const { padding, minHeight } = calculateStyles(fontSize);
+  const dispatch = useAppDispatch();
 
   const handleBlur = () => {
+    if (id && attr) {
+      const payload = { id, [attr]: text };
+      dispatch(updateCard(payload));
+    }
     setSelected(false);
   };
 
@@ -100,17 +103,17 @@ export default function BorderlessInput({
           fontSize={fontSize}
           fontWeight={fontWeight}
           rows={1}
-          paddingTop={padding}
+          $paddingTop={padding}
           required
           onFocus={e => e.target.select()}
-          minHeight={minHeight}
+          $minHeight={minHeight}
         />
       ) : (
         <NormalDiv
           onClick={handleClick}
           fontSize={fontSize}
           fontWeight={fontWeight}
-          paddingTop={padding}
+          $paddingTop={padding}
           tabIndex={0}
           onKeyDown={handleKeyDown}
         >

@@ -33,10 +33,10 @@ const App: React.FC = () => {
           <Route path="/" element={<Home />} />
           <Route path="/join" element={<Join />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/board" element={<Board />} />
+          <Route path="/board/:id" element={<Board />} />
           <Route path="/bulletin" element={<Bulletin />} />
           <Route path="/notification" element={<Notification />} />
-          <Route path="/setting" element={<Setting />} />
+          <Route path="/setting/:id" element={<Setting />} />
           <Route path="/bulletin/writing" element={<Writing />} />
         </Routes>
       </BrowserRouter>
