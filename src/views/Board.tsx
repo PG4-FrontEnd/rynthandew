@@ -13,7 +13,8 @@ import BoardModal from '../components/BoardComponets/BoardModal.tsx';
 import Invitation from '../components/BoardComponets/Invitation.tsx';
 import MemberList from '../components/BoardComponets/MemberList.tsx';
 import { useAppDispatch, useAppSelector } from '../utils/hooks.ts';
-import { setCard } from '../store/cardSlice.ts';
+import { setCard, updateCard } from '../store/cardSlice.ts';
+import { tagOptions } from '../assets/constants.ts';
 
 const EmptyDiv = styled.div`
   width: 1px;
@@ -135,9 +136,11 @@ function Board() {
     const [movedCard] = newStartColumn.splice(source.index, 1);
 
     const newFinishColumn = [...finishColumn];
+    const newTag = tagOptions.find(tag => tag.optionName === finish);
+    dispatch(updateCard({ id: movedCard.id, tagId: newTag.id }));
     newFinishColumn.splice(destination.index, 0, movedCard);
 
-    // 상태 업데이트
+    // Update the state
     if (start === 'Todo') setTodo(newStartColumn);
     else if (start === 'Progress') setProgress(newStartColumn);
     else if (start === 'PR') setPullRequests(newStartColumn);
