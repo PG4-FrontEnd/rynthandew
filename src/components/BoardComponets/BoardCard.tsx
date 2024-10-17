@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ICON, Icon } from '../utils/SvgSprite.tsx';
+import { ICON, Icon } from '../../utils/SvgSprite.tsx';
 
 interface BoardCardProp {
   title: string;
@@ -10,6 +10,7 @@ interface BoardCardProp {
   fontSize?: number;
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   closeClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
+  isDragging: boolean;
 }
 
 const CloseSVGdiv = styled.div<{ size: number }>`
@@ -26,14 +27,19 @@ const CloseSVGdiv = styled.div<{ size: number }>`
   }
 `;
 
-const BoardCardContainer = styled.div<{ width: number; height: number }>`
+const BoardCardContainer = styled.div<{
+  width: number;
+  height: number;
+  $isDragging: boolean;
+}>`
   padding: 10px;
+  margin-bottom: 10px;
   box-sizing: border-box;
   width: ${props => `${props.width}px`};
   height: ${props => `${props.height}px`};
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.6);
   border-radius: 4px;
-  background-color: white;
+
   cursor: pointer;
 
   &:hover {
@@ -48,6 +54,8 @@ const BoardCardContainer = styled.div<{ width: number; height: number }>`
   &:focus {
     background-color: var(--selected);
   }
+
+  background-color: ${props => (props.$isDragging ? 'gray' : 'white')};
 `;
 
 const BoardCardContainerFlexCol = styled.div`
@@ -103,7 +111,7 @@ const AccountCircleFilledSvgDiv = styled.div`
   transition: all 0.1s ease-in;
 `;
 
-export default function BoardCard({
+const BoardCard = ({
   title,
   manager = '없음',
   height = 80,
@@ -111,9 +119,15 @@ export default function BoardCard({
   onClick = () => {},
   closeClick = () => {},
   fontSize = 16,
-}: BoardCardProp) {
+  isDragging,
+}: BoardCardProp) => {
   return (
-    <BoardCardContainer width={width} height={height} onClick={onClick}>
+    <BoardCardContainer
+      width={width}
+      height={height}
+      onClick={onClick}
+      $isDragging={isDragging}
+    >
       <BoardCardContainerFlexCol>
         <BoardCardContainerTitleDiv>
           <BoardCardContainerTitle fontSize={fontSize}>
@@ -130,4 +144,6 @@ export default function BoardCard({
       </BoardCardContainerFlexCol>
     </BoardCardContainer>
   );
-}
+};
+
+export default BoardCard;

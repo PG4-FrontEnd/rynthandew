@@ -13,6 +13,7 @@ interface InputProps {
   fontSize?: number;
   iconLeft?: string;
   iconSize?: number;
+  initialValue?: string;
 }
 
 const InputContainer = styled.div`
@@ -99,6 +100,7 @@ export default function CustomInput({
   iconLeft = '',
   iconSize = 20,
   required = false,
+  initialValue,
 }: InputProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -107,6 +109,7 @@ export default function CustomInput({
       {label && <Label>{label}</Label>}
       <InputWrapper>
         <Input
+          value={initialValue}
           width={width}
           height={height}
           placeholder={placeholder}
