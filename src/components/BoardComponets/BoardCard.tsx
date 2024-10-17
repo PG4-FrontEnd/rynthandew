@@ -9,23 +9,8 @@ interface BoardCardProp {
   width?: number;
   fontSize?: number;
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
-  closeClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   isDragging: boolean;
 }
-
-const CloseSVGdiv = styled.div<{ size: number }>`
-  opacity: 0;
-  visibility: hidden;
-  transition:
-    opacity 0.1s ease-in,
-    visibility 0.1s ease-in;
-  width: ${props => `${props.size}px`};
-  height: ${props => `${props.size}px`};
-
-  &:hover {
-    cursor: pointer;
-  }
-`;
 
 const BoardCardContainer = styled.div<{
   width: number;
@@ -44,11 +29,6 @@ const BoardCardContainer = styled.div<{
 
   &:hover {
     background-color: #e9ecee;
-
-    ${CloseSVGdiv} {
-      opacity: 1;
-      visibility: visible;
-    }
   }
 
   &:focus {
@@ -91,6 +71,7 @@ const ManagerIndicator = styled.div`
   font-size: 12px;
   color: black;
   bottom: -30px;
+  z-index: 10;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.6);
   transition:
     opacity 0.1s ease-in,
@@ -117,7 +98,6 @@ const BoardCard = ({
   height = 80,
   width = 220,
   onClick = () => {},
-  closeClick = () => {},
   fontSize = 16,
   isDragging,
 }: BoardCardProp) => {
@@ -133,9 +113,6 @@ const BoardCard = ({
           <BoardCardContainerTitle fontSize={fontSize}>
             {title.length < 10 ? title : `${title.slice(0, 10)}...`}
           </BoardCardContainerTitle>
-          <CloseSVGdiv onClick={closeClick} size={fontSize}>
-            <Icon icon={ICON.CANCLE} size={fontSize.toString()} />
-          </CloseSVGdiv>
         </BoardCardContainerTitleDiv>
         <AccountCircleFilledSvgDiv>
           <Icon icon={ICON.ACCOUNT_CIRCLE} />

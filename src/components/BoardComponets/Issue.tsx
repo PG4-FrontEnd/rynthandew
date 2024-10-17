@@ -3,19 +3,21 @@ import styled from 'styled-components';
 import BorderlessInput from '../BorderlessInput.tsx';
 import CustomInput from '../CustomInput.tsx';
 import BoardDropdown from './BoardDropdown.tsx';
+import { tagOptions } from '../../assets/constants.ts';
 
 interface IssueProps {
   title: string;
   content: string;
-  startDay: string;
-  duration: string;
-  manager: string;
+  startDay?: string;
+  duration?: string;
+  manager?: string;
   tagId: number;
+  id: number;
 }
 
 interface Option {
   id: number;
-  optionName: string; // Corrected typo
+  optionName: string;
 }
 
 const Container = styled.div`
@@ -26,25 +28,8 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: 3fr 1fr;
 `;
-const tagOptions: Option[] = [
-  {
-    id: 0,
-    optionName: 'Todo',
-  },
-  {
-    id: 1,
-    optionName: 'Progress',
-  },
-  {
-    id: 2,
-    optionName: 'PR',
-  },
-  {
-    id: 3,
-    optionName: 'Done',
-  },
-];
 
+// api 연결 시 삭제 필요
 const memberOption = [
   { id: 0, optionName: 'Alice' },
   { id: 1, optionName: 'Bob' },
@@ -98,12 +83,13 @@ const EmptyDiv = styled.div`
 `;
 
 export default function Issue({
-  title,
-  content,
-  startDay,
-  duration,
+  title: initialTitle,
+  content: initialContent,
+  startDay: initialStartDay,
+  duration: initialDuration,
   manager,
   tagId,
+  id,
 }: IssueProps) {
   const selectedTagId = tagOptions.find(item => item.id === tagId);
   const selectedMember = memberOption.find(item => item.optionName === manager);
@@ -111,13 +97,29 @@ export default function Issue({
   return (
     <Container>
       <ContainerLeft>
-        <BorderlessInput initialText={title} fontSize={24} />
+        <BorderlessInput
+          initialText={initialTitle}
+          fontSize={24}
+          id={id}
+          attr="title"
+        />
         <EmptyDiv />
-        <BorderlessInput initialText={content} fontSize={16} fontWeight={400} />
+        <BorderlessInput
+          initialText={initialContent}
+          fontSize={16}
+          fontWeight={400}
+          id={id}
+          attr="content"
+        />
       </ContainerLeft>
       <ContainerRight>
         <TodoDropDownContainer>
-          <BoardDropdown options={tagOptions} selected={selectedTagId} />
+          <BoardDropdown
+            options={tagOptions}
+            selected={selectedTagId}
+            id={id}
+            attr="tagId"
+          />
         </TodoDropDownContainer>
         <DetailList>
           <DetailRow>
@@ -125,7 +127,12 @@ export default function Issue({
               <span>담당자</span>
             </DetailTag>
             <DetailTag>
-              <BoardDropdown options={memberOption} selected={selectedMember} />
+              <BoardDropdown
+                options={memberOption}
+                selected={selectedMember}
+                id={id}
+                attr="manager"
+              />
             </DetailTag>
           </DetailRow>
           <DetailRow>
@@ -134,11 +141,13 @@ export default function Issue({
             </DetailTag>
             <CustomInput
               placeholder="날짜를 입력해주세요"
-              initialValue={startDay}
+              initialValue={initialStartDay}
               width={150}
               type="date"
               height={32}
               fontSize={14}
+              id={id}
+              attr="startDay"
             />
           </DetailRow>
           <DetailRow>
@@ -147,11 +156,13 @@ export default function Issue({
             </DetailTag>
             <CustomInput
               placeholder="날짜를 입력해주세요"
-              initialValue={duration}
+              initialValue={initialDuration}
               width={150}
               type="date"
               height={32}
               fontSize={14}
+              attr="duration"
+              id={id}
             />
           </DetailRow>
         </DetailList>

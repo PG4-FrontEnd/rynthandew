@@ -12,18 +12,8 @@ import BoardBackdrop from '../components/BoardComponets/BoardBackdrop.tsx';
 import BoardModal from '../components/BoardComponets/BoardModal.tsx';
 import Invitation from '../components/BoardComponets/Invitation.tsx';
 import MemberList from '../components/BoardComponets/MemberList.tsx';
-
-export interface boardProps {
-  id: number;
-  duration: string;
-  createAt: string;
-  updatedAt: string;
-  startDay: string;
-  content: string;
-  manager: string;
-  title: string;
-  tagId: number;
-}
+import { useAppDispatch, useAppSelector } from '../utils/hooks.ts';
+import { setCard } from '../store/cardSlice.ts';
 
 const EmptyDiv = styled.div`
   width: 1px;
@@ -33,7 +23,7 @@ const EmptyDiv = styled.div`
 const BoardListGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 240px);
-  grid-gap: 20px;
+  grid-gap: 30px;
   width: 100%;
   margin-top: 20px;
 `;
@@ -62,8 +52,8 @@ const IconContainer = styled.div`
 `;
 
 function Board() {
-  // 서버에서 api로 데이터 다운 받을 때 사용
-  // const [cards, setCards] = useState<boardProps[]>(data);
+  const dispatch = useAppDispatch();
+  const cards = useAppSelector(state => state.cards.value);
   const [todos, setTodo] = useState<boardProps[]>([]);
   const [progress, setProgress] = useState<boardProps[]>([]);
   const [pullRequests, setPullRequests] = useState<boardProps[]>([]);
@@ -72,11 +62,15 @@ function Board() {
   const [clickAddPerson, setClickAddPerson] = useState(false);
 
   useEffect(() => {
-    setTodo(data.filter(card => card.tagId === 0));
-    setProgress(data.filter(card => card.tagId === 1));
-    setPullRequests(data.filter(card => card.tagId === 2));
-    setDone(data.filter(card => card.tagId === 3));
-  }, [data]);
+    dispatch(setCard(data));
+  }, [dispatch]);
+
+  useEffect(() => {
+    setTodo(cards.filter(card => card.tagId === 0));
+    setProgress(cards.filter(card => card.tagId === 1));
+    setPullRequests(cards.filter(card => card.tagId === 2));
+    setDone(cards.filter(card => card.tagId === 3));
+  }, [cards]);
 
   const { id } = useParams();
 
@@ -123,8 +117,8 @@ function Board() {
     if (start === finish) {
       const column = columnName(start);
       const newColumn = [...column];
-      const [movedCard] = newColumn.splice(source.index, 1); // source에서 제거
-      newColumn.splice(destination.index, 0, movedCard); // destination에 삽입
+      const [movedCard] = newColumn.splice(source.index, 1);
+      newColumn.splice(destination.index, 0, movedCard);
 
       if (start === 'Todo') setTodo(newColumn);
       else if (start === 'Progress') setProgress(newColumn);

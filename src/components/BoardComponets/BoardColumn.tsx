@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Droppable } from 'react-beautiful-dnd';
 import DraggableCard from './DraggableCard.tsx';
-import { boardProps } from '../../views/Board.tsx';
 import Issue from './Issue.tsx';
 import BoardBackdrop from './BoardBackdrop.tsx';
+import { useAppDispatch } from '../../utils/hooks.ts';
+import { addNewCard } from '../../store/cardSlice.ts';
 
 const BoardListContainer = styled.div``;
 
@@ -18,7 +19,7 @@ interface ColumnProps {
 const Container = styled.div`
   border-radius: 4px;
   background-color: #cdd3d8;
-  width: fit-content;
+  width: 100%;
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -50,68 +51,76 @@ const AddButton = styled.button`
   border-radius: 5px;
 `;
 
-export default function BoardColumn({
-  cards,
-  boardId,
-  title,
-  tagId,
-}: ColumnProps) {
-  const [currentIssue, setCurrentIssue] = useState<boardProps | null>(null);
-  const [openIssue, setOpenIssue] = useState(false);
+const BoardColumn = React.memo(
+  ({ cards, boardId, title, tagId }: ColumnProps) => {
+    const [currentIssue, setCurrentIssue] = useState<boardProps | null>(null);
+    const [openIssue, setOpenIssue] = useState(false);
 
-  const handleOpenIssueOn = (item: boardProps) => {
-    setCurrentIssue(item);
-    setOpenIssue(true);
-  };
+    const dispatch = useAppDispatch();
 
-  const handleOpenIssueOff = () => {
-    setOpenIssue(false);
-    setCurrentIssue(null);
-  };
+    const defaultIssue: boardProps = {
+      id: Math.random(),
+      duration: '',
+      createAt: '',
+      updatedAt: '',
+      startDay: '',
+      content: '내용을 입력해주세요',
+      manager: '없음',
+      title: '제목',
+      tagId,
+    };
 
-  const defaultIssue: boardProps = {
-    id: 0,
-    duration: '2000-01-01',
-    createAt: '2000-01-01',
-    updatedAt: '2000-01-01',
-    startDay: '2000-01-01',
-    content: '내용을 입력해주세요',
-    manager: '없음',
-    title: '제목',
-    tagId,
-  };
+    const handleOpenIssueOn = (item: boardProps) => {
+      setCurrentIssue(item);
+      setOpenIssue(true);
+    };
 
-  return (
-    <Container>
-      {openIssue && currentIssue && (
-        <BoardBackdrop onClick={handleOpenIssueOff}>
-          <Issue {...currentIssue} />
-        </BoardBackdrop>
-      )}
-      <TitleContainer>{title}</TitleContainer>
-      <div>
-        <Droppable droppableId={boardId}>
-          {provided => (
-            <BoardListContainer
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-            >
-              {cards.map((item: boardProps, index: number) => (
-                <DraggableCard
-                  item={item}
-                  index={index}
-                  key={item.id}
-                  onClick={() => handleOpenIssueOn(item)}
-                />
-              ))}
-              {provided.placeholder}
-            </BoardListContainer>
-          )}
-        </Droppable>
-      </div>
-      <AddButton type="button" onClick={() => handleOpenIssueOn(defaultIssue)}>
-        <span>+ 이슈 추가하기</span>
-      </AddButton>
-    </Container>
-  );
-}
+    const handleClickAddIssue = () => {
+      const newCard = { ...defaultIssue, id: Math.random() };
+      dispatch(addNewCard({ ...newCard, id: Math.random() }));
+      setCurrentIssue(newCard);
+      setOpenIssue(true);
+    };
+
+    const handleOpenIssueOff = () => {
+      setOpenIssue(false);
+      setCurrentIssue(null);
+    };
+
+    return (
+      <Container>
+        {openIssue && currentIssue && (
+          <BoardBackdrop onClick={handleOpenIssueOff}>
+            <Issue {...currentIssue} />
+          </BoardBackdrop>
+        )}
+        <TitleContainer>{title}</TitleContainer>
+        <div>
+          <Droppable droppableId={boardId}>
+            {provided => (
+              <BoardListContainer
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {cards.map((item: boardProps, index: number) => (
+                  <DraggableCard
+                    item={item}
+                    index={index}
+                    key={item.id}
+                    onClick={() => handleOpenIssueOn(item)}
+                  />
+                ))}
+                {provided.placeholder}
+              </BoardListContainer>
+            )}
+          </Droppable>
+        </div>
+        <AddButton type="button" onClick={handleClickAddIssue}>
+          <span>+ 이슈 추가하기</span>
+        </AddButton>
+      </Container>
+    );
+  },
+);
+
+export default BoardColumn;

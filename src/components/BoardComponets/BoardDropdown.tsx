@@ -1,15 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import styled from 'styled-components';
-
-interface Option {
-  id: number;
-  optionName: string;
-}
-
-interface DropdownProps {
-  options: Option[];
-  selected: Option;
-}
+import { updateCard } from '../../store/cardSlice.ts';
+import { useAppDispatch } from '../../utils/hooks.ts';
+import { tagOptions } from '../../assets/constants.ts';
 
 const DropdownContainer = styled.div`
   position: relative;
@@ -56,9 +49,10 @@ const ArrowIcon = styled.span<{ $isOpen: boolean }>`
   transform: ${({ $isOpen }) => ($isOpen ? 'rotate(180deg)' : 'rotate(0)')};
 `;
 
-const BoardDropdown: React.FC<DropdownProps> = ({ options, selected }) => {
+const BoardDropdown = ({ options, selected, id, attr }: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
 
   const handleToggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -67,18 +61,33 @@ const BoardDropdown: React.FC<DropdownProps> = ({ options, selected }) => {
   const handleSelectOption = (option: string) => {
     setSelectedOption(option);
     setIsOpen(false);
+
+    if (id && attr) {
+      if (attr === 'tagId') {
+        const matchTag = tagOptions.find(tag => tag.optionName === option);
+        if (matchTag) {
+          const payload = { id, [attr]: matchTag.id };
+          dispatch(updateCard(payload));
+        }
+      } else {
+        const payload = { id, [attr]: option };
+        dispatch(updateCard(payload));
+      }
+    }
   };
 
   useEffect(() => {
-    if (selected) {
+    if (selected && selected.optionName) {
       setSelectedOption(selected.optionName);
+    } else if (options.length > 0) {
+      setSelectedOption(options[0].optionName);
     }
-  }, []);
+  }, [selected, options]);
 
   return (
     <DropdownContainer>
       <DropdownButton onClick={handleToggleDropdown}>
-        {selectedOption || options[0].optionName}
+        {selectedOption}
         <ArrowIcon $isOpen={isOpen}>▼</ArrowIcon>
       </DropdownButton>
       <DropdownList $isOpen={isOpen}>
@@ -95,4 +104,4 @@ const BoardDropdown: React.FC<DropdownProps> = ({ options, selected }) => {
   );
 };
 
-export default BoardDropdown;
+export default memo(BoardDropdown);
