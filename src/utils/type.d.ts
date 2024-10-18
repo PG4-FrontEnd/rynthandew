@@ -12,10 +12,10 @@ declare interface boardProps {
 
 declare interface prProps {
   id: number;
-  create_at: string;
+  created_at: string;
   updated_at: string;
   body: string;
-  user: {
+  assignee: {
     login: string;
   };
   title: string;

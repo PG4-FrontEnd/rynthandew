@@ -85,13 +85,13 @@ function Board() {
           (pr: prProps): boardProps => ({
             id: pr.id,
             duration: '',
-            createAt: pr.create_at,
+            createAt: pr.created_at,
             updatedAt: pr.updated_at,
-            startDay: pr.create_at,
+            startDay: pr.created_at,
             content: pr.body || 'No description',
-            manager: pr.user.login,
+            manager: pr.assignee.login,
             title: pr.title,
-            tagId: pr.id,
+            tagId: 2,
           }),
         );
 

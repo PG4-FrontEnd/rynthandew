@@ -31,16 +31,9 @@ const Container = styled.div`
 
 // api 연결 시 삭제 필요
 const memberOption = [
-  { id: 0, optionName: 'Alice' },
-  { id: 1, optionName: 'Bob' },
-  { id: 2, optionName: 'Charlie' },
-  { id: 3, optionName: 'David' },
-  { id: 4, optionName: 'Eve' },
-  { id: 5, optionName: 'Frank' },
-  { id: 6, optionName: 'Grace' },
-  { id: 7, optionName: 'Hannah' },
-  { id: 8, optionName: 'Ian' },
-  { id: 9, optionName: 'Jack' },
+  { id: 0, optionName: 'dongguJeong' },
+  { id: 1, optionName: 'Galaxy-104' },
+  { id: 2, optionName: 'Youjin-K' },
 ];
 
 const ContainerLeft = styled.div`
