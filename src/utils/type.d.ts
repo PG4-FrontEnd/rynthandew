@@ -10,6 +10,18 @@ declare interface boardProps {
   tagId: number;
 }
 
+declare interface prProps {
+  id: number;
+  create_at: string;
+  updated_at: string;
+  body: string;
+  user: {
+    login: string;
+  };
+  title: string;
+  url: number;
+}
+
 declare interface AttrProps {
   attr?: 'title' | 'content' | 'startDay' | 'duration' | 'manager' | 'tagId';
   id?: number;

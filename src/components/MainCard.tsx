@@ -56,12 +56,7 @@ const CardDescription = styled.p`
   margin: 10px;
 `;
 
-const MainCard: React.FC<CardProps> = ({
-  title,
-  leader,
-  createdAt,
-  imageUrl,
-}) => {
+const MainCard = ({ title, leader, createdAt, imageUrl }: CardProps) => {
   return (
     <CardContainer>
       <CardImageContainer>

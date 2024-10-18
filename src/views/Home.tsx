@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import MainCard from '../components/MainCard.tsx';
 import CustomInput from '../components/CustomInput.tsx';
 import { ICON, Icon } from '../utils/SvgSprite.tsx';
-import Modal from '../components/backdrop/Modal.tsx';
+import Modal from '../components/MainModal.tsx';
 import Layout from '../components/Layout.tsx';
 import PageHeader from '../components/pageHeader/PageHeader.tsx';
 
@@ -75,7 +75,7 @@ export default function Home() {
       id: 100 + Math.floor(Math.random() * 10),
       title,
       leader,
-      createdAt: today,
+      createdAt: `생성일 : ${today}`,
       imageUrl: 'https://github.com/github.png',
     };
 

@@ -20,10 +20,7 @@ const Container = styled.div`
   align-items: center;
 `;
 
-export default function BoardBackdrop({
-  children,
-  onClick,
-}: BoardBackdropProps) {
+export default function Backdrop({ children, onClick }: BoardBackdropProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
 
   const handleClose = (e: React.MouseEvent) => {

@@ -67,9 +67,45 @@ function Board() {
   }, [dispatch]);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await (
+          await fetch(
+            `https://api.github.com/repos/${process.env.REACT_APP_GITHUB_REPO_OWNER}/${process.env.REACT_APP_GITHUB_REPO}/pulls`,
+            {
+              method: 'GET',
+              headers: {
+                Authorization: `token ${process.env.REACT_APP_GITHUB_TOKEN}`,
+              },
+            },
+          )
+        ).json();
+
+        const transformedData = response.map(
+          (pr: prProps): boardProps => ({
+            id: pr.id,
+            duration: '',
+            createAt: pr.create_at,
+            updatedAt: pr.updated_at,
+            startDay: pr.create_at,
+            content: pr.body || 'No description',
+            manager: pr.user.login,
+            title: pr.title,
+            tagId: pr.id,
+          }),
+        );
+
+        setPullRequests(transformedData);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
     setTodo(cards.filter(card => card.tagId === 0));
     setProgress(cards.filter(card => card.tagId === 1));
-    setPullRequests(cards.filter(card => card.tagId === 2));
     setDone(cards.filter(card => card.tagId === 3));
   }, [cards]);
 

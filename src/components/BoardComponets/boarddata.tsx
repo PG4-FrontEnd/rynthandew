@@ -21,17 +21,7 @@ export const data = [
     title: 'Second Board',
     tagId: 1,
   },
-  {
-    id: 3,
-    duration: '2024-10-10',
-    createAt: '2024-10-05',
-    updatedAt: '2024-10-09',
-    startDay: '2024-10-06',
-    content: 'This is the content of the third board.',
-    manager: 'Charlie',
-    title: 'Third Board',
-    tagId: 2,
-  },
+
   {
     id: 4,
     duration: '2024-10-10',
@@ -66,17 +56,7 @@ export const data = [
     title: 'Sixth Board',
     tagId: 1,
   },
-  {
-    id: 7,
-    duration: '2024-10-10',
-    createAt: '2024-10-09',
-    updatedAt: '2024-10-11',
-    startDay: '2024-10-10',
-    content: 'This is the content of the seventh board.',
-    manager: 'Grace',
-    title: 'Seventh Board',
-    tagId: 2,
-  },
+
   {
     id: 8,
     duration: '2024-10-10',
