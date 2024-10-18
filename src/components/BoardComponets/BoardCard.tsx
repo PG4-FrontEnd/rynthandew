@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ICON, Icon } from '../utils/SvgSprite.tsx';
+import { ICON, Icon } from '../../utils/SvgSprite.tsx';
 
 interface BoardCardProp {
   title: string;
@@ -9,45 +9,33 @@ interface BoardCardProp {
   width?: number;
   fontSize?: number;
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
-  closeClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
+  isDragging: boolean;
 }
 
-const CloseSVGdiv = styled.div<{ size: number }>`
-  opacity: 0;
-  visibility: hidden;
-  transition:
-    opacity 0.1s ease-in,
-    visibility 0.1s ease-in;
-  width: ${props => `${props.size}px`};
-  height: ${props => `${props.size}px`};
-
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const BoardCardContainer = styled.div<{ width: number; height: number }>`
+const BoardCardContainer = styled.div<{
+  width: number;
+  height: number;
+  $isDragging: boolean;
+}>`
   padding: 10px;
+  margin-bottom: 10px;
   box-sizing: border-box;
   width: ${props => `${props.width}px`};
   height: ${props => `${props.height}px`};
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.6);
   border-radius: 4px;
-  background-color: white;
+
   cursor: pointer;
 
   &:hover {
     background-color: #e9ecee;
-
-    ${CloseSVGdiv} {
-      opacity: 1;
-      visibility: visible;
-    }
   }
 
   &:focus {
     background-color: var(--selected);
   }
+
+  background-color: ${props => (props.$isDragging ? 'gray' : 'white')};
 `;
 
 const BoardCardContainerFlexCol = styled.div`
@@ -83,6 +71,7 @@ const ManagerIndicator = styled.div`
   font-size: 12px;
   color: black;
   bottom: -30px;
+  z-index: 10;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.6);
   transition:
     opacity 0.1s ease-in,
@@ -103,25 +92,27 @@ const AccountCircleFilledSvgDiv = styled.div`
   transition: all 0.1s ease-in;
 `;
 
-export default function BoardCard({
+const BoardCard = ({
   title,
   manager = '없음',
   height = 80,
   width = 220,
   onClick = () => {},
-  closeClick = () => {},
   fontSize = 16,
-}: BoardCardProp) {
+  isDragging,
+}: BoardCardProp) => {
   return (
-    <BoardCardContainer width={width} height={height} onClick={onClick}>
+    <BoardCardContainer
+      width={width}
+      height={height}
+      onClick={onClick}
+      $isDragging={isDragging}
+    >
       <BoardCardContainerFlexCol>
         <BoardCardContainerTitleDiv>
           <BoardCardContainerTitle fontSize={fontSize}>
             {title.length < 10 ? title : `${title.slice(0, 10)}...`}
           </BoardCardContainerTitle>
-          <CloseSVGdiv onClick={closeClick} size={fontSize}>
-            <Icon icon={ICON.CANCLE} size={fontSize.toString()} />
-          </CloseSVGdiv>
         </BoardCardContainerTitleDiv>
         <AccountCircleFilledSvgDiv>
           <Icon icon={ICON.ACCOUNT_CIRCLE} />
@@ -130,4 +121,6 @@ export default function BoardCard({
       </BoardCardContainerFlexCol>
     </BoardCardContainer>
   );
-}
+};
+
+export default BoardCard;
