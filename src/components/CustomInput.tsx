@@ -102,10 +102,15 @@ export default function CustomInput({
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (id && attr) {
-      const payload = { id, [attr]: value };
-      dispatch(updateCard(payload));
-    }
+    const timerId = setTimeout(() => {
+      if (id && attr) {
+        const payload = { id, [attr]: value };
+        dispatch(updateCard(payload));
+      }
+    }, 1000);
+    return () => {
+      clearTimeout(timerId);
+    };
   }, [id, attr, value]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -2,7 +2,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom'; // Link 임포트 추가
-import { ICON } from '../../utils/SvgSprite.tsx'; // ICON enum의 경로 수정
+import { Icon, ICON } from '../../utils/SvgSprite.tsx'; // ICON enum의 경로 수정
 
 // Header 컨테이너 스타일 정의
 const HeaderContainer = styled.div`
@@ -17,7 +17,7 @@ const HeaderContainer = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 10;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
@@ -33,6 +33,7 @@ const Title = styled.h1`
 // 아이콘 래퍼 스타일 정의
 const IconWrapper = styled.div`
   display: flex;
+  gap: 20px;
   align-items: center;
   margin-right: 30px;
 `;
@@ -40,6 +41,7 @@ const IconWrapper = styled.div`
 // 버튼 스타일 정의
 const IconButton = styled.button`
   background: none;
+
   border: none;
   padding: 0;
   cursor: pointer; // 마우스 커서가 버튼에 올 때 포인터로 변경
@@ -77,18 +79,12 @@ function Header() {
           type="button" // 타입 속성 추가
           aria-label="Notification"
         >
-          <svg width={30} height={20}>
-            <use href={ICON.NOTIFICATION} />
-          </svg>
+          <IconButton onClick={handlePeopleClick} type="button">
+            <Icon icon={ICON.NOTIFICATION} size="30" />
+          </IconButton>
         </IconButton>
-        <IconButton
-          onClick={handlePeopleClick}
-          type="button" // 타입 속성 추가
-          aria-label="People"
-        >
-          <svg width={50} height={30}>
-            <use href={ICON.PEOPLE} />
-          </svg>
+        <IconButton onClick={handlePeopleClick} type="button">
+          <Icon icon={ICON.AVATAR} size="30" />
         </IconButton>
       </IconWrapper>
     </HeaderContainer>

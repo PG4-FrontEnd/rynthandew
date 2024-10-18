@@ -9,7 +9,7 @@ interface CardProps {
 }
 
 const CardContainer = styled.div`
-  width: 250px;
+  width: 240px;
   height: 300px;
   border: 1px solid #ccc;
   border-radius: 10px;
@@ -17,6 +17,10 @@ const CardContainer = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  background-color: white;
+  &:hover {
+    background-color: #e9ecee;
+  }
 `;
 
 const CardImageContainer = styled.div`
@@ -41,15 +45,15 @@ const CardContent = styled.div`
 `;
 
 const CardTitle = styled.h3`
-  font-size: 1.5rem;
-  margin: 0 0 10px;
+  font-size: 18px;
+  margin: 10px;
   color: #333;
 `;
 
 const CardDescription = styled.p`
-  font-size: 1rem;
+  font-size: 14px;
   color: #666;
-  margin: 0 0 10px;
+  margin: 10px;
 `;
 
 const MainCard: React.FC<CardProps> = ({

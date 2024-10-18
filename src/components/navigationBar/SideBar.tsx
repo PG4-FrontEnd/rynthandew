@@ -4,12 +4,12 @@ import styled from 'styled-components';
 import { ICON } from '../../utils/SvgSprite.tsx'; // ICON enum의 경로 수정
 
 const SidebarContainer = styled.div`
-  width: 200px;
+  width: 180px;
   background-color: white;
   height: 100vh;
   padding: 20px;
   border-right: 1px solid #d0d0d0;
-  margin-top: 80px;
+  padding-top: 120px;
 `;
 
 const MenuText = styled.span`
@@ -34,6 +34,7 @@ const SidebarItem = styled.div`
 `;
 
 const TextStyled = styled.span`
+  font-size: 14px;
   margin-left: 10px; /* 아이콘과의 간격을 위한 여백 */
 `;
 

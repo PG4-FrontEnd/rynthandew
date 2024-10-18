@@ -8,7 +8,7 @@ import CustomInput from '../components/CustomInput.tsx';
 import { data } from '../components/BoardComponets/boarddata.tsx';
 import BoardColumn from '../components/BoardComponets/BoardColumn.tsx';
 import { ICON, Icon } from '../utils/SvgSprite.tsx';
-import BoardBackdrop from '../components/BoardComponets/BoardBackdrop.tsx';
+import BoardBackdrop from '../components/Backdrop.tsx';
 import BoardModal from '../components/BoardComponets/BoardModal.tsx';
 import Invitation from '../components/BoardComponets/Invitation.tsx';
 import MemberList from '../components/BoardComponets/MemberList.tsx';

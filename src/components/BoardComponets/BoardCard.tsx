@@ -111,7 +111,7 @@ const BoardCard = ({
       <BoardCardContainerFlexCol>
         <BoardCardContainerTitleDiv>
           <BoardCardContainerTitle fontSize={fontSize}>
-            {title.length < 10 ? title : `${title.slice(0, 10)}...`}
+            {title.length < 20 ? title : `${title.slice(0, 20)}...`}
           </BoardCardContainerTitle>
         </BoardCardContainerTitleDiv>
         <AccountCircleFilledSvgDiv>

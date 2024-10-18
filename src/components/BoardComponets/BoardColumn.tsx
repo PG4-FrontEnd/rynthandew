@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Droppable } from 'react-beautiful-dnd';
 import DraggableCard from './DraggableCard.tsx';
 import Issue from './Issue.tsx';
-import BoardBackdrop from './BoardBackdrop.tsx';
+import BoardBackdrop from '../Backdrop.tsx';
 import { useAppDispatch } from '../../utils/hooks.ts';
 import { addNewCard } from '../../store/cardSlice.ts';
 
@@ -30,6 +30,7 @@ const Container = styled.div`
 
 const TitleContainer = styled.div`
   width: 100%;
+  padding-left: 20px;
   margin-bottom: 10px;
 `;
 

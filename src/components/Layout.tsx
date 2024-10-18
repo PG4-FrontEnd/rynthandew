@@ -13,7 +13,8 @@ const Content = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding-top: 111px;
+  padding-top: 121px;
+  background-color: #f9fafb;
 `;
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
