@@ -5,6 +5,7 @@ interface BorderlessInputProps {
   initialText?: string;
   fontSize?: number;
   fontWeight?: number;
+  label?: string;
 }
 
 const Container = styled.div`
@@ -20,14 +21,13 @@ const TextArea = styled.textarea<{
   minHeight: number;
 }>`
   border: 2px solid var(--main);
-  padding-left: 4px;
-  padding-top: ${props => `${props.paddingTop}px`};
+  padding: ${props => `${props.paddingTop}px 4px`};
   background-color: white;
   width: 100%;
   line-height: 28px !important;
   font-size: ${props => `${props.fontSize}px`};
-  font-weight: ${props => `${props.fontWeight}`};
-  min-height: ${props => `${props.minHeight}`};
+  font-weight: ${props => props.fontWeight};
+  min-height: ${props => `${props.minHeight}px`};
   resize: none;
   outline: none;
   overflow: hidden;
@@ -42,11 +42,18 @@ const NormalDiv = styled.div<{
   padding-top: ${props => `${props.paddingTop}px`};
   padding-left: 4px;
   font-size: ${props => `${props.fontSize}px`};
-  font-weight: ${props => `${props.fontWeight}`};
+  font-weight: ${props => props.fontWeight};
   cursor: pointer;
   &:hover {
     background-color: #dee2e5;
   }
+`;
+
+const Label = styled.label`
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #333;
 `;
 
 const calculateStyles = (size: number) => {
@@ -66,6 +73,7 @@ export default function BorderlessInput({
   initialText = '내용을 입력해주세요',
   fontSize = 16,
   fontWeight = 500,
+  label,
 }: BorderlessInputProps) {
   const [selected, setSelected] = useState(false);
   const [text, setText] = useState(initialText);
@@ -92,6 +100,7 @@ export default function BorderlessInput({
 
   return (
     <Container>
+      {label && <Label>{label}</Label>}
       {selected ? (
         <TextArea
           onBlur={handleBlur}

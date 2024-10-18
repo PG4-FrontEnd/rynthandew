@@ -6,18 +6,19 @@ import SideBar from './navigationBar/SideBar.tsx';
 const LayoutContainer = styled.div`
   display: flex;
   height: 100vh;
-  overflow: hidden;
 `;
 
 const MainContentWrapper = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 `;
 
 const MainContent = styled.main`
   flex: 1;
   padding: 20px;
+  overflow-y: auto;
 `;
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {

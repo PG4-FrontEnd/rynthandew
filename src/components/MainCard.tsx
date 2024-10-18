@@ -11,10 +11,10 @@ interface CardProps {
 const CardContainer = styled.div`
   width: 220px;
   height: 250px;
-  border: 1px solid #ccc;
+  border: 1px solid #e0e0e0;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: white;
   display: flex;
   flex-direction: column;
 `;
@@ -25,31 +25,31 @@ const CardImageContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #f5f5f5;
 `;
 
 const CardImage = styled.img`
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   object-fit: cover;
   border-radius: 50%;
 `;
 
 const CardContent = styled.div`
   padding: 16px;
-  height: 125px;
-  text-align: center;
+  text-align: left;
 `;
 
 const CardTitle = styled.h3`
   font-size: 1rem;
   margin: 0 0 10px;
-  color: #1976d2;
+  color: #333;
 `;
 
 const CardDescription = styled.p`
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: #666;
-  margin: 0 0 10px;
+  margin: 0 0 5px;
 `;
 
 const MainCard: React.FC<CardProps> = ({

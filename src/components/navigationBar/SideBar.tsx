@@ -1,15 +1,13 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { ICON } from '../../utils/SvgSprite.tsx'; // ICON enum의 경로 수정
+import { ICON, Icon } from '../../utils/SvgSprite.tsx';
 
 const SidebarContainer = styled.div`
   width: 200px;
-  background-color: white;
   height: 100vh;
-  padding: 20px;
+  background-color: white;
   border-right: 1px solid #d0d0d0;
-  margin-top: 80px;
+  padding-top: 70px; // Header의 높이만큼 여백 추가
 `;
 
 const MenuText = styled.span`
@@ -18,50 +16,35 @@ const MenuText = styled.span`
   font-weight: normal;
   font-size: 14px;
   color: rgba(0, 0, 0, 0.6);
+  padding-left: 20px;
 `;
 
 const SidebarItem = styled.div`
   display: flex;
   align-items: center;
-  margin: 0;
+  padding: 10px 20px;
   cursor: pointer;
-  padding: 10px 0;
-  width: 100%;
 
   &:hover {
     background-color: #f0f0f0;
   }
 `;
 
-const TextStyled = styled.span`
-  margin-left: 10px; /* 아이콘과의 간격을 위한 여백 */
+const ItemText = styled.span`
+  margin-left: 10px;
 `;
 
 function Sidebar() {
-  const navigate = useNavigate();
-
-  const handleBoardClick = () => {
-    navigate('/board');
-  };
-
-  const handleBulletinClick = () => {
-    navigate('/bulletin');
-  };
-
   return (
     <SidebarContainer>
       <MenuText>메뉴</MenuText>
-      <SidebarItem onClick={handleBoardClick}>
-        <svg width={30} height={20}>
-          <use href={ICON.BOARD} />
-        </svg>
-        <TextStyled>보드</TextStyled>
+      <SidebarItem>
+        <Icon icon={ICON.BOARD} size="24" />
+        <ItemText>보드</ItemText>
       </SidebarItem>
-      <SidebarItem onClick={handleBulletinClick}>
-        <svg width={30} height={20}>
-          <use href={ICON.BULLETIN} />
-        </svg>
-        <TextStyled>게시판</TextStyled>
+      <SidebarItem>
+        <Icon icon={ICON.BULLETIN} size="24" />
+        <ItemText>게시판</ItemText>
       </SidebarItem>
     </SidebarContainer>
   );

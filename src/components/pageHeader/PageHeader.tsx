@@ -5,10 +5,16 @@ import Title from '../Title.tsx';
 
 interface PageHeaderProps {
   title: string;
-  showBreadcrumbs?: boolean; // boolean 타입으로 변경
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  showBreadcrumbs?: boolean;
+  onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
   rightElement?: React.ReactNode;
 }
+
+const PageHeaderContainer = styled.div`
+  display: grid;
+  grid-template-rows: auto auto;
+  grid-gap: 8px;
+`;
 
 const PageHeaderForm = styled.form`
   display: flex;
@@ -30,17 +36,23 @@ const EmptyDiv = styled.div`
 
 export default function PageHeader({
   title,
-  showBreadcrumbs = true, // 이름 변경 및 기본값 설정
+  showBreadcrumbs = true,
   onSubmit,
   rightElement,
 }: PageHeaderProps) {
-  return (
-    <PageHeaderForm onSubmit={onSubmit}>
+  const headerContent = (
+    <>
       <LeftSection>
         {showBreadcrumbs ? <Breadcrumbs /> : <EmptyDiv />}
         <Title title={title} />
       </LeftSection>
       {rightElement}
-    </PageHeaderForm>
+    </>
+  );
+
+  return onSubmit ? (
+    <PageHeaderForm onSubmit={onSubmit}>{headerContent}</PageHeaderForm>
+  ) : (
+    <PageHeaderContainer>{headerContent}</PageHeaderContainer>
   );
 }

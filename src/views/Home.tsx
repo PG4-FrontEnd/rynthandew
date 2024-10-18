@@ -1,56 +1,39 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import MainCard from '../components/MainCard.tsx';
 import CustomInput from '../components/CustomInput.tsx';
 import { ICON, Icon } from '../utils/SvgSprite.tsx';
-import Title from '../components/Title.tsx';
 import Modal from '../components/backdrop/Modal.tsx';
 
 const HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  overflow: hidden;
 `;
 
-const TopSpace = styled.div`
-  height: 90px;
-`;
-
-const ContentSection = styled.div`
-  flex: 1;
+const TopSection = styled.div`
   display: flex;
-  flex-direction: column;
-  padding: 0 20px;
-`;
-
-const NavSection = styled.div`
-  display: flex;
-  flex-direction: column; // 두 줄로 표시하기 위해 방향 변경
-  gap: 8px; // 간격 조정
-  margin-bottom: 16px;
-`;
-
-const SearchBar = styled.div`
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
 `;
 
-const ProjectGridWrapper = styled.div`
-  flex: 1;
-  overflow-y: auto;
+const Title = styled.h2`
+  font-size: 24px;
+  margin: 0;
+`;
+
+const SearchWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
 `;
 
 const ProjectGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(220px, 1fr)
-  ); // 카드 크기 조정
-  gap: 8px; // 간격 조정
-`;
-
-const AddProjectCardWrapper = styled.div`
-  width: 200px; // 카드 크기 조정
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
 `;
 
 const AddProjectCard = styled.div`
@@ -58,17 +41,19 @@ const AddProjectCard = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 210px;
-  height: 250px; // 카드 크기 조정
+  height: 250px;
   background-color: #fff;
   border: 1px dashed #ccc;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   cursor: pointer;
 
   &:hover {
     background-color: #f0f0f0;
   }
+`;
+
+const SettingsIcon = styled.div`
+  cursor: pointer;
 `;
 
 export default function Home() {
@@ -80,17 +65,13 @@ export default function Home() {
       createdAt: '생성일: 2024-10-10',
       imageUrl: 'https://github.com/github.png',
     },
-    // 더 많은 프로젝트를 추가하여 스크롤 테스트를 할 수 있습니다.
   ]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
-  const handleAddProject = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+  const handleAddProject = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
+  const handleSettingsClick = () => navigate('/setting');
 
   const handleSaveProject = (url: string, description: string) => {
     const newProject = {
@@ -98,47 +79,44 @@ export default function Home() {
       title: description,
       leader: 'New Leader',
       createdAt: `생성일: ${new Date().toISOString().split('T')[0]}`,
-      imageUrl: 'https://github.com/github.png', // 임시 이미지 URL
+      imageUrl: 'https://github.com/github.png',
     };
     setProjects([...projects, newProject]);
+    setIsModalOpen(false);
   };
 
   return (
     <HomeContainer>
-      <TopSpace />
-      <ContentSection>
-        <NavSection>
-          <Title title="홈" fontSize={16} />
-          <Title title="프로젝트" fontSize={16} />
-        </NavSection>
-        <SearchBar>
+      <TopSection>
+        <Title>프로젝트</Title>
+        <SearchWrapper>
           <CustomInput
-            width={200}
-            type="text"
-            placeholder="Search..."
-            iconLeft={ICON.SEARCH}
+            width={220}
+            height={32}
+            fontSize={14}
+            type="search"
+            placeholder="제목 + 내용"
           />
-        </SearchBar>
-        <ProjectGridWrapper>
-          <ProjectGrid>
-            {projects.map(project => (
-              <MainCard
-                key={project.id}
-                title={project.title}
-                leader={project.leader}
-                createdAt={project.createdAt}
-                imageUrl={project.imageUrl}
-              />
-            ))}
-            <AddProjectCardWrapper>
-              <AddProjectCard onClick={handleAddProject}>
-                <Icon icon={ICON.ADD} size="48" />
-                <span>새 프로젝트 추가하기</span>
-              </AddProjectCard>
-            </AddProjectCardWrapper>
-          </ProjectGrid>
-        </ProjectGridWrapper>
-      </ContentSection>
+        </SearchWrapper>
+        <SettingsIcon onClick={handleSettingsClick}>
+          <Icon icon={ICON.SETTING} size="24" />
+        </SettingsIcon>
+      </TopSection>
+      <ProjectGrid>
+        {projects.map(project => (
+          <MainCard
+            key={project.id}
+            title={project.title}
+            leader={project.leader}
+            createdAt={project.createdAt}
+            imageUrl={project.imageUrl}
+          />
+        ))}
+        <AddProjectCard onClick={handleAddProject}>
+          <Icon icon={ICON.ADD} size="48" />
+          <span>새 프로젝트 추가하기</span>
+        </AddProjectCard>
+      </ProjectGrid>
       <Modal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
